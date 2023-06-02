@@ -42,14 +42,14 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                             FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        User user=(User)authResult.getPrincipal();
+        String username = (String) authResult.getPrincipal();
         List<String> roles=new ArrayList<>();
         authResult.getAuthorities().forEach(a->{
             roles.add(a.getAuthority());
         });
         String jwt= JWT.create()
                 .withIssuer(request.getRequestURI())
-                .withSubject(user.getUsername())
+                .withSubject(username)
                 .withArrayClaim("roles",roles.toArray(new String[roles.size()]))
                 .withExpiresAt(new Date(System.currentTimeMillis()+SecurityParams.EXPIRATION))
                 .sign(Algorithm.HMAC256(SecurityParams.SECRET));

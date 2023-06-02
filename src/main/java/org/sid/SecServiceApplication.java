@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.stream.Stream;
 
@@ -16,7 +17,7 @@ public class SecServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(SecServiceApplication.class, args);
     }
-    @Bean
+   // @Bean
     CommandLineRunner start(AccountService accountService){
         return args->{
             accountService.save(new AppRole(null,"USER"));
@@ -30,6 +31,11 @@ public class SecServiceApplication {
     @Bean
     BCryptPasswordEncoder getBCPE(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public RestTemplate getRestTemplate() {
+        return new RestTemplate();
     }
 
 }
